@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LunaCel — Chips, Portabilidad, Recargas e IZZI</title>
+<meta name="description" content="LunaCel: chips y SIM de Bait, Telcel y Movistar, portabilidad conservando tu número, recargas de todas las compañías y paquetes IZZI para tu hogar. Promoción estrella: Bait pospago por portabilidad $199.">
+<meta property="og:title" content="LunaCel — Chips, Portabilidad, Recargas e IZZI">
+<meta property="og:description" content="Bait, Telcel, Movistar e IZZI en un solo lugar. Promoción estrella: Bait pospago por portabilidad $199.">
+<meta property="og:image" content="https://lunacelmx.github.io/lunacel/img/logo-lunacel.jpg">
+<meta property="og:type" content="website">
+<link rel="icon" href="img/icono-lunacel.jpg">
+<style>
+  :root{
+    --bg:#070d24; --bg2:#0b1434; --card:#101c42; --line:#1e2c5c;
+    --ink:#eef2ff; --mut:#a8b3d9; --cyan:#22d3ee; --indigo:#6366f1;
+    --gold:#fbbf24; --wa:#25d366;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:'Segoe UI',system-ui,-apple-system,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55}
+  img{max-width:100%;display:block}
+  a{text-decoration:none;color:inherit}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 18px}
+  header{position:sticky;top:0;z-index:50;background:rgba(7,13,36,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;gap:12px;padding:10px 0}
+  .nav img{width:44px;height:44px;border-radius:12px}
+  .brand{font-size:1.45rem;font-weight:800;letter-spacing:.3px}
+  .brand span{color:var(--cyan)}
+  .nav nav{margin-left:auto;display:flex;gap:18px;font-size:.95rem;color:var(--mut)}
+  .nav nav a:hover{color:var(--ink)}
+  .btn{display:inline-flex;align-items:center;gap:8px;background:var(--wa);color:#06281a;font-weight:700;padding:11px 20px;border-radius:999px;border:0;cursor:pointer;font-size:1rem}
+  .btn:hover{filter:brightness(1.07)}
+  .btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--cyan)}
+  .btn.small{padding:8px 16px;font-size:.92rem}
+  header .btn{margin-left:8px}
+  @media(max-width:760px){.nav nav{display:none}}
+  .hero{position:relative;overflow:hidden;background:radial-gradient(1000px 500px at 85% -10%,rgba(99,102,241,.35),transparent 60%),radial-gradient(800px 420px at 0% 110%,rgba(34,211,238,.18),transparent 55%),var(--bg2)}
+  .hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:34px;align-items:center;padding:54px 18px 60px}
+  @media(max-width:860px){.hero .wrap{grid-template-columns:1fr}}
+  .kicker{display:inline-block;background:rgba(251,191,36,.14);color:var(--gold);border:1px solid rgba(251,191,36,.45);padding:5px 14px;border-radius:999px;font-size:.85rem;font-weight:700;letter-spacing:.4px}
+  h1{font-size:2.6rem;line-height:1.12;margin:16px 0 12px}
+  h1 .hl{color:var(--cyan)}
+  .hero p.lead{color:var(--mut);font-size:1.12rem;max-width:34rem}
+  .hero .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+  .hero figure{border-radius:22px;overflow:hidden;border:1px solid var(--line);box-shadow:0 24px 60px rgba(0,0,0,.45)}
+  .hero figure img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/3}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px}
+  .chips li{list-style:none;background:var(--card);border:1px solid var(--line);color:var(--mut);padding:6px 13px;border-radius:999px;font-size:.88rem}
+  section{padding:58px 0}
+  h2{font-size:1.9rem;margin-bottom:6px}
+  .sub{color:var(--mut);margin-bottom:26px;max-width:44rem}
+  .promo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+  .promo{background:var(--card);border:1px solid var(--line);border-radius:20px;overflow:hidden;display:flex;flex-direction:column}
+  .promo.star{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold),0 18px 44px rgba(251,191,36,.12)}
+  .promo img{width:100%;aspect-ratio:16/9;object-fit:cover}
+  .promo .body{padding:18px;display:flex;flex-direction:column;gap:8px;flex:1}
+  .tag{align-self:flex-start;background:rgba(34,211,238,.13);color:var(--cyan);border:1px solid rgba(34,211,238,.4);font-size:.76rem;font-weight:700;padding:3px 10px;border-radius:999px;text-transform:uppercase;letter-spacing:.5px}
+  .promo.star .tag{background:rgba(251,191,36,.15);color:var(--gold);border-color:rgba(251,191,36,.5)}
+  .promo h3{font-size:1.22rem}
+  .promo .price{font-size:1.7rem;font-weight:800;color:var(--gold)}
+  .promo p{color:var(--mut);font-size:.97rem;flex:1}
+  .carriers{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px}
+  .carrier{background:linear-gradient(180deg,var(--card),var(--bg2));border:1px solid var(--line);border-radius:20px;padding:24px}
+  .carrier.first{border-color:var(--cyan);box-shadow:0 0 0 1px var(--cyan)}
+  .carrier h3{font-size:1.5rem;margin-bottom:4px}
+  .carrier .mini{color:var(--cyan);font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px}
+  .carrier p{color:var(--mut);margin:10px 0 16px}
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center}
+  @media(max-width:860px){.split{grid-template-columns:1fr}}
+  .split figure{border-radius:22px;overflow:hidden;border:1px solid var(--line)}
+  .split figure img{aspect-ratio:4/3;object-fit:cover;width:100%}
+  .feat{list-style:none;margin:14px 0 20px;display:grid;gap:9px;color:var(--mut)}
+  .feat li::before{content:"🌙 ";}
+  .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+  .gallery figure{border-radius:18px;overflow:hidden;border:1px solid var(--line);position:relative}
+  .gallery img{aspect-ratio:4/3;object-fit:cover;width:100%}
+  .gallery figcaption{position:absolute;left:0;right:0;bottom:0;padding:22px 14px 10px;background:linear-gradient(transparent,rgba(4,8,22,.85));font-size:.92rem;font-weight:600}
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+  .step{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px}
+  .step b{display:inline-flex;width:34px;height:34px;border-radius:50%;background:var(--indigo);align-items:center;justify-content:center;margin-bottom:10px}
+  .step p{color:var(--mut);font-size:.95rem}
+  footer{border-top:1px solid var(--line);background:var(--bg2);padding:34px 0 90px}
+  footer .cols{display:flex;gap:26px;flex-wrap:wrap;justify-content:space-between;align-items:flex-start}
+  footer p{color:var(--mut);font-size:.93rem}
+  #lunaMoon{cursor:pointer;display:inline-block;font-size:1.05rem;user-select:none}
+  .wa-float{position:fixed;right:18px;bottom:18px;z-index:60;width:60px;height:60px;border-radius:50%;background:var(--wa);display:flex;align-items:center;justify-content:center;font-size:30px;box-shadow:0 12px 30px rgba(0,0,0,.5)}
+  .loading{color:var(--mut)}
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Store","name":"LunaCel","description":"Chips y SIM de Bait, Telcel y Movistar, portabilidad, recargas y paquetes IZZI.","telephone":"+52-56-6041-1887","image":"https://lunacelmx.github.io/lunacel/img/logo-lunacel.jpg"}
+</script>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <img src="img/icono-lunacel.jpg" alt="LunaCel">
+    <div class="brand">Luna<span>Cel</span></div>
+    <nav>
+      <a href="#promociones">Promociones</a>
+      <a href="#companias">Compañías</a>
+      <a href="#izzi">IZZI</a>
+      <a href="#galeria">Galería</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <a class="btn small" href="https://wa.me/525660411887?text=Hola%20LunaCel%2C%20quiero%20informaci%C3%B3n%20de%20chips%20y%20promociones" target="_blank" rel="noopener">WhatsApp</a>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <div>
+      <span class="kicker">⭐ Promoción estrella: Bait pospago por portabilidad $199</span>
+      <h1>Tu chip, tu número y tu internet, <span class="hl">en un solo lugar</span></h1>
+      <p class="lead">En LunaCel activamos tu línea de Bait, Telcel o Movistar, te cambiamos de compañía conservando tu número y conectamos tu hogar con IZZI.</p>
+      <div class="cta">
+        <a class="btn" href="https://wa.me/525660411887?text=Hola%20LunaCel%2C%20quiero%20informaci%C3%B3n%20de%20chips%20y%20promociones" target="_blank" rel="noopener">💬 Pedir por WhatsApp</a>
+        <a class="btn ghost" href="#promociones">Ver promociones</a>
+      </div>
+      <ul class="chips">
+        <li>Activación de líneas</li><li>Portabilidad</li><li>Recargas</li><li>Venta de SIM</li><li>Internet y TV</li>
+      </ul>
+    </div>
+    <figure><img src="img/hero.webp" alt="Chips y SIM de LunaCel"></figure>
+  </div>
+</div>
+
+<section id="promociones">
+  <div class="wrap">
+    <h2>Promociones vigentes</h2>
+    <p class="sub">Las promociones de telefonía cambian seguido: aquí siempre ves las actuales. Toca la que te interese y pídela por WhatsApp al instante.</p>
+    <div class="promo-grid" id="promoGrid"><p class="loading">Cargando promociones…</p></div>
+  </div>
+</section>
+
+<section id="companias" style="background:var(--bg2)">
+  <div class="wrap">
+    <h2>Compañías que manejamos</h2>
+    <p class="sub">Chips, activaciones, portabilidad y recargas de las principales compañías. Bait es nuestra recomendada.</p>
+    <div class="carriers">
+      <article class="carrier first">
+        <div class="mini">Recomendada</div>
+        <h3>Bait</h3>
+        <p>Chips Bait, activación de líneas, portabilidad con tu mismo número y la promoción pospago por portabilidad de $199.</p>
+        <a class="btn small" href="https://wa.me/525660411887?text=Hola%20LunaCel%2C%20quiero%20un%20chip%20Bait" target="_blank" rel="noopener">Quiero mi chip Bait</a>
+      </article>
+      <article class="carrier">
+        <div class="mini">Chips y recargas</div>
+        <h3>Telcel</h3>
+        <p>Venta de chips Telcel, activación de líneas nuevas y recargas para que nunca te quedes sin saldo ni datos.</p>
+        <a class="btn small" href="https://wa.me/525660411887?text=Hola%20LunaCel%2C%20quiero%20un%20chip%20Telcel" target="_blank" rel="noopener">Quiero mi chip Telcel</a>
+      </article>
+      <article class="carrier">
+        <div class="mini">Chips y recargas</div>
+        <h3>Movistar</h3>
+        <p>Chips Movistar, líneas nuevas, portabilidad y recargas. Pregunta por las promociones vigentes de la compañía.</p>
+        <a class="btn small" href="https://wa.me/525660411887?text=Hola%20LunaCel%2C%20quiero%20un%20chip%20Movistar" target="_blank" rel="noopener">Quiero mi chip Movistar</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="izzi">
+  <div class="wrap split">
+    <figure><img src="img/hogar.webp" alt="Internet y TV para tu hogar"></figure>
+    <div>
+      <h2>Distribuidor IZZI</h2>
+      <p class="sub" style="margin-bottom:0">Internet y TV para tu hogar con la atención de tu distribuidor de confianza.</p>
+      <ul class="feat">
+        <li>Paquetes de internet para casa y negocio</li>
+        <li>Internet + TV en un solo paquete</li>
+        <li>Contratación fácil por WhatsApp</li>
+        <li>Pregunta por las promociones vigentes en tu zona</li>
+      </ul>
+      <a class="btn" href="https://wa.me/525660411887?text=Hola%20LunaCel%2C%20quiero%20informaci%C3%B3n%20de%20paquetes%20IZZI%20para%20mi%20hogar" target="_blank" rel="noopener">💬 Preguntar por IZZI</a>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--bg2)">
+  <div class="wrap">
+    <h2>Así de fácil es</h2>
+    <p class="sub">Sin vueltas: nos escribes, te confirmamos la promoción vigente y activamos tu línea.</p>
+    <div class="steps">
+      <div class="step"><b>1</b><h3>Escríbenos</h3><p>Toca cualquier botón de WhatsApp y dinos qué necesitas: chip, portabilidad, recarga o IZZI.</p></div>
+      <div class="step"><b>2</b><h3>Te confirmamos</h3><p>Te confirmamos precio y detalles de la promoción vigente al momento.</p></div>
+      <div class="step"><b>3</b><h3>Quedas conectado</h3><p>Activamos tu línea o tu servicio y empiezas a usarlo de inmediato.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="galeria">
+  <div class="wrap">
+    <h2>Galería</h2>
+    <p class="sub">Un vistazo a lo que hacemos en LunaCel.</p>
+    <div class="gallery" id="galleryGrid"></div>
+  </div>
+</section>
+
+<footer id="contacto">
+  <div class="wrap cols">
+    <div>
+      <div class="brand">Luna<span style="color:var(--cyan)">Cel</span> <span id="lunaMoon" title="">🌙</span></div>
+      <p>Chips, portabilidad, recargas e IZZI.<br>Atención por WhatsApp: 56 6041 1887</p>
+    </div>
+    <div>
+      <p style="margin-bottom:10px">¿Listo para conectarte?</p>
+      <a class="btn" href="https://wa.me/525660411887?text=Hola%20LunaCel%2C%20quiero%20informaci%C3%B3n%20de%20chips%20y%20promociones" target="_blank" rel="noopener">💬 Escríbenos ahora</a>
+      <p style="margin-top:14px"><a href="lunacel.apk" download style="color:var(--cyan);font-weight:700;text-decoration:none">📲 Descargar la app de LunaCel</a></p>
+    </div>
+  </div>
+  <div style="border-top:1px solid rgba(255,255,255,.07);margin-top:26px;padding:12px 16px;text-align:center">
+    <a href="acceso-privado-lunacel.html" style="color:#8b93b8;font-size:.78rem;letter-spacing:.14em;text-decoration:none;text-transform:uppercase">Acceso LunaCel</a>
+  </div>
+</footer>
+
+<a class="wa-float" href="https://wa.me/525660411887?text=Hola%20LunaCel%2C%20quiero%20informaci%C3%B3n%20de%20chips%20y%20promociones" target="_blank" rel="noopener" aria-label="WhatsApp">💬</a>
+
+<script>
+var API = "https://lunacel-api.berroteranc64.workers.dev";
+var WA = "525660411887";
+var DEFAULT_CONTENT = {
+  promos: [
+    {id:"promo-bait-portabilidad",titulo:"Bait pospago por portabilidad",precio:"$199",descripcion:"Cámbiate a Bait conservando tu mismo número: $199 mensuales, 38 GB, redes sociales ilimitadas e incluye Sam's Club Socio Benefits. Precio y GB promocionales durante 12 meses desde la portabilidad.",etiqueta:"Promoción estrella",imagen:"img/bait-pospago.jpg"},
+    {id:"promo-chips",titulo:"Chips y líneas nuevas",precio:"",descripcion:"SIM de Bait, Telcel y Movistar: activa tu línea nueva o recupera tu número con nosotros.",etiqueta:"Todas las compañías",imagen:"img/hero.webp"},
+    {id:"promo-izzi",titulo:"Paquetes IZZI para tu hogar",precio:"",descripcion:"Internet y TV para tu casa con distribuidor IZZI. Pregunta por los paquetes y promociones vigentes en tu zona.",etiqueta:"Internet + TV",imagen:"img/hogar.webp"}
+  ],
+  galeria: [
+    {id:"g1",imagen:"img/hero.webp",titulo:"Chips y activaciones"},
+    {id:"g2",imagen:"img/tienda.webp",titulo:"Atención en tienda"},
+    {id:"g3",imagen:"img/hogar.webp",titulo:"Internet para tu hogar"}
+  ]
+};
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+function waLink(text){return "https://wa.me/"+WA+"?text="+encodeURIComponent(text);}
+function renderPromos(promos){
+  var grid=document.getElementById("promoGrid");
+  if(!promos||!promos.length){grid.innerHTML="<p class='loading'>Pregunta por WhatsApp por las promociones vigentes.</p>";return;}
+  grid.innerHTML=promos.map(function(p,i){
+    var msg="Hola LunaCel, me interesa esta promoción: "+p.titulo+(p.precio?" "+p.precio:"");
+    return "<article class='promo"+(i===0?" star":"")+"'>"
+      +(p.imagen?"<img src='"+esc(p.imagen)+"' alt='"+esc(p.titulo)+"' loading='lazy'>":"")
+      +"<div class='body'>"
+      +(p.etiqueta?"<span class='tag'>"+esc(p.etiqueta)+"</span>":"")
+      +"<h3>"+esc(p.titulo)+"</h3>"
+      +(p.precio?"<div class='price'>"+esc(p.precio)+"</div>":"")
+      +"<p>"+esc(p.descripcion)+"</p>"
+      +"<a class='btn small' target='_blank' rel='noopener' href='"+waLink(msg)+"'>La quiero</a>"
+      +"</div></article>";
+  }).join("");
+}
+function renderGallery(items){
+  var grid=document.getElementById("galleryGrid");
+  if(!items||!items.length){grid.innerHTML="";return;}
+  grid.innerHTML=items.map(function(g){
+    return "<figure><img src='"+esc(g.imagen)+"' alt='"+esc(g.titulo)+"' loading='lazy'>"+(g.titulo?"<figcaption>"+esc(g.titulo)+"</figcaption>":"")+"</figure>";
+  }).join("");
+}
+function renderAll(c){renderPromos(c.promos);renderGallery(c.galeria);}
+renderAll(DEFAULT_CONTENT);
+fetch(API+"/api/content",{cache:"no-store"}).then(function(r){return r.json();}).then(function(c){
+  if(c&&Array.isArray(c.promos)&&c.promos.length){renderAll(c);}
+}).catch(function(){});
+/* Acceso discreto del dueño: 3 toques en la luna del pie de página */
+(function(){
+  var taps=0,timer=null,moon=document.getElementById("lunaMoon");
+  if(!moon)return;
+  moon.addEventListener("click",function(){
+    taps++;clearTimeout(timer);timer=setTimeout(function(){taps=0;},1200);
+    if(taps>=3){location.href="acceso-privado-lunacel.html";}
+  });
+})();
+if("serviceWorker" in navigator){
+  navigator.serviceWorker.register("sw.js").then(function(reg){reg.update();}).catch(function(){});
+}
+</script>
+</body>
+</html>

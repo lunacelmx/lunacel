@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acceso privado — LunaCel</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="img/logo.webp">
+<style>
+  :root{--bg:#070d24;--bg2:#0b1434;--card:#101c42;--line:#1e2c5c;--ink:#eef2ff;--mut:#a8b3d9;--cyan:#22d3ee;--gold:#fbbf24;--ok:#34d399;--bad:#f87171}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Segoe UI',system-ui,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
+  .wrap{max-width:860px;margin:0 auto;padding:22px 16px 60px}
+  h1{font-size:1.5rem;margin-bottom:4px}
+  h2{font-size:1.2rem;margin:26px 0 12px}
+  p.mut{color:var(--mut);font-size:.95rem}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
+  label{display:block;font-size:.82rem;color:var(--mut);margin:10px 0 4px}
+  input,textarea{width:100%;background:var(--bg2);border:1px solid var(--line);border-radius:10px;color:var(--ink);padding:10px 12px;font-size:1rem;font-family:inherit}
+  textarea{min-height:74px;resize:vertical}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:560px){.row{grid-template-columns:1fr}}
+  .btn{display:inline-flex;align-items:center;gap:8px;background:var(--cyan);color:#04222b;font-weight:700;padding:11px 20px;border-radius:999px;border:0;cursor:pointer;font-size:1rem}
+  .btn.gold{background:var(--gold);color:#2a1c00}
+  .btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+  .btn.danger{background:transparent;color:var(--bad);border:1.5px solid var(--bad)}
+  .btn.small{padding:7px 14px;font-size:.9rem}
+  .bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:16px 0}
+  .status{font-size:.95rem;min-height:1.4em}
+  .status.ok{color:var(--ok)} .status.bad{color:var(--bad)}
+  .thumb{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:10px;border:1px solid var(--line);background:var(--bg2)}
+  .login{max-width:420px;margin:60px auto 0}
+  .hidden{display:none}
+  .filebtn{margin-top:8px}
+  input[type=file]{padding:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- LOGIN -->
+  <div id="loginBox" class="login card">
+    <h1>🌙 Acceso privado</h1>
+    <p class="mut">Este panel es solo para el dueño de LunaCel. Escribe tu clave para entrar a editar promociones, precios y fotos.</p>
+    <label>Clave de acceso</label>
+    <input type="password" id="pw" autocomplete="current-password" placeholder="Tu clave">
+    <div class="bar"><button class="btn" id="loginBtn">Entrar</button></div>
+    <div class="status" id="loginStatus"></div>
+  </div>
+
+  <!-- PANEL -->
+  <div id="panel" class="hidden">
+    <h1>🌙 Panel de LunaCel</h1>
+    <p class="mut">Edita tus promociones, precios y fotos. Al guardar, tu página se actualiza al instante para todos tus clientes.</p>
+    <div class="bar">
+      <button class="btn gold" id="saveBtn">💾 Guardar cambios</button>
+      <a class="btn ghost" href="index.html">Ver mi página</a>
+      <button class="btn ghost" id="logoutBtn">Cerrar sesión</button>
+    </div>
+    <div class="status" id="status"></div>
+
+    <h2>🎁 Promociones</h2>
+    <p class="mut">La primera promoción de la lista se muestra destacada como la estrella de tu página.</p>
+    <div id="promoList"></div>
+    <button class="btn small" id="addPromo">+ Agregar promoción</button>
+
+    <h2>🖼️ Galería de fotos</h2>
+    <div id="galleryList"></div>
+    <button class="btn small" id="addPhoto">+ Agregar foto</button>
+
+    <div class="bar" style="margin-top:28px">
+      <button class="btn gold" id="saveBtn2">💾 Guardar cambios</button>
+    </div>
+    <div class="status" id="status2"></div>
+  </div>
+
+</div>
+
+<script>
+var API = "https://lunacel-api.berroteranc64.workers.dev";
+var token = sessionStorage.getItem("lunacel_token") || "";
+var content = { promos: [], galeria: [] };
+
+function $(id){return document.getElementById(id);}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+function setStatus(msg, ok){
+  ["status","status2"].forEach(function(id){var el=$(id);if(el){el.textContent=msg;el.className="status "+(ok===true?"ok":ok===false?"bad":"");}});
+}
+
+function promoCard(p, i){
+  return "<div class='card' data-promo='"+i+"'>"
+    +"<img class='thumb' src='"+esc(p.imagen||"")+"' alt='' onerror='this.style.display=\"none\"'>"
+    +"<label>Título de la promoción</label><input data-f='titulo' value='"+esc(p.titulo||"")+"' placeholder='Ej. Bait pospago por portabilidad'>"
+    +"<div class='row'><div><label>Precio (déjalo vacío si no lleva)</label><input data-f='precio' value='"+esc(p.precio||"")+"' placeholder='Ej. $199'></div>"
+    +"<div><label>Etiqueta</label><input data-f='etiqueta' value='"+esc(p.etiqueta||"")+"' placeholder='Ej. Promoción estrella'></div></div>"
+    +"<label>Descripción</label><textarea data-f='descripcion' placeholder='Detalles de la promoción'>"+esc(p.descripcion||"")+"</textarea>"
+    +"<label>Foto (enlace) o sube una desde tu celular</label><input data-f='imagen' value='"+esc(p.imagen||"")+"' placeholder='img/tienda.webp o https://…'>"
+    +"<input type='file' accept='image/*' class='filebtn' data-upload='promo' data-i='"+i+"'>"
+    +"<div class='bar'><button class='btn danger small' data-del='promo' data-i='"+i+"'>🗑️ Quitar esta promoción</button></div>"
+    +"</div>";
+}
+function galleryCard(g, i){
+  return "<div class='card' data-gal='"+i+"'>"
+    +"<img class='thumb' src='"+esc(g.imagen||"")+"' alt='' onerror='this.style.display=\"none\"'>"
+    +"<label>Título de la foto</label><input data-f='titulo' value='"+esc(g.titulo||"")+"' placeholder='Ej. Atención en tienda'>"
+    +"<label>Foto (enlace) o sube una desde tu celular</label><input data-f='imagen' value='"+esc(g.imagen||"")+"' placeholder='img/hero.webp o https://…'>"
+    +"<input type='file' accept='image/*' class='filebtn' data-upload='gal' data-i='"+i+"'>"
+    +"<div class='bar'><button class='btn danger small' data-del='gal' data-i='"+i+"'>🗑️ Quitar esta foto</button></div>"
+    +"</div>";
+}
+function render(){
+  $("promoList").innerHTML = content.promos.map(promoCard).join("") || "<p class='mut'>Sin promociones todavía.</p>";
+  $("galleryList").innerHTML = content.galeria.map(galleryCard).join("") || "<p class='mut'>Sin fotos todavía.</p>";
+  bindCards();
+}
+function readCards(){
+  document.querySelectorAll("[data-promo]").forEach(function(card){
+    var i = +card.getAttribute("data-promo"), p = content.promos[i]; if(!p) return;
+    card.querySelectorAll("[data-f]").forEach(function(inp){ p[inp.getAttribute("data-f")] = inp.value; });
+  });
+  document.querySelectorAll("[data-gal]").forEach(function(card){
+    var i = +card.getAttribute("data-gal"), g = content.galeria[i]; if(!g) return;
+    card.querySelectorAll("[data-f]").forEach(function(inp){ g[inp.getAttribute("data-f")] = inp.value; });
+  });
+}
+function bindCards(){
+  document.querySelectorAll("[data-del]").forEach(function(btn){
+    btn.onclick = function(){
+      readCards();
+      var i = +btn.getAttribute("data-i");
+      if(btn.getAttribute("data-del")==="promo") content.promos.splice(i,1); else content.galeria.splice(i,1);
+      render();
+    };
+  });
+  document.querySelectorAll("[data-upload]").forEach(function(inp){
+    inp.onchange = function(){
+      var file = inp.files && inp.files[0]; if(!file) return;
+      var kind = inp.getAttribute("data-upload"), i = +inp.getAttribute("data-i");
+      setStatus("Subiendo foto…");
+      uploadImage(file).then(function(url){
+        readCards();
+        if(kind==="promo") content.promos[i].imagen = url; else content.galeria[i].imagen = url;
+        render(); setStatus("Foto subida. No olvides Guardar cambios.", true);
+      }).catch(function(){ setStatus("No se pudo subir la foto. Intenta de nuevo.", false); });
+    };
+  });
+}
+function uploadImage(file){
+  return new Promise(function(resolve, reject){
+    var img = new Image();
+    img.onload = function(){
+      var max = 1280, w = img.width, h = img.height;
+      var scale = Math.min(1, max / Math.max(w, h));
+      var cw = Math.round(w*scale), ch = Math.round(h*scale);
+      var canvas = document.createElement("canvas"); canvas.width = cw; canvas.height = ch;
+      canvas.getContext("2d").drawImage(img, 0, 0, cw, ch);
+      var dataUrl = canvas.toDataURL("image/jpeg", 0.82);
+      var b64 = dataUrl.split(",")[1];
+      fetch(API + "/api/admin/image", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "X-Admin-Token": token },
+        body: JSON.stringify({ data: b64, type: "image/jpeg" })
+      }).then(function(r){ return r.json(); }).then(function(d){
+        if(d && d.url) resolve(d.url); else reject(new Error("bad"));
+      }).catch(reject);
+    };
+    img.onerror = reject;
+    img.src = URL.createObjectURL(file);
+  });
+}
+function loadContent(){
+  fetch(API + "/api/content", { cache: "no-store" }).then(function(r){ return r.json(); }).then(function(c){
+    if(c && Array.isArray(c.promos)){ content = c; render(); }
+  }).catch(function(){ setStatus("No se pudo cargar el contenido actual.", false); });
+}
+function save(){
+  readCards();
+  setStatus("Guardando…");
+  fetch(API + "/api/admin/content", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json", "X-Admin-Token": token },
+    body: JSON.stringify(content)
+  }).then(function(r){ return r.json(); }).then(function(d){
+    if(d && d.ok) setStatus("✅ Cambios guardados. Tu página ya muestra lo nuevo.", true);
+    else setStatus("No se pudo guardar. Revisa tu sesión.", false);
+  }).catch(function(){ setStatus("No se pudo guardar. Revisa tu conexión.", false); });
+}
+function showPanel(){ $("loginBox").classList.add("hidden"); $("panel").classList.remove("hidden"); loadContent(); }
+
+$("loginBtn").onclick = function(){
+  var pw = $("pw").value;
+  $("loginStatus").textContent = "Entrando…";
+  fetch(API + "/api/admin/login", {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ password: pw })
+  }).then(function(r){ return r.json(); }).then(function(d){
+    if(d && d.token){ token = d.token; sessionStorage.setItem("lunacel_token", token); showPanel(); }
+    else { $("loginStatus").textContent = "Clave incorrecta. Intenta de nuevo."; $("loginStatus").className = "status bad"; }
+  }).catch(function(){ $("loginStatus").textContent = "No se pudo entrar. Revisa tu conexión."; });
+};
+$("pw").addEventListener("keydown", function(e){ if(e.key==="Enter") $("loginBtn").click(); });
+$("logoutBtn").onclick = function(){ sessionStorage.removeItem("lunacel_token"); location.reload(); };
+$("saveBtn").onclick = save; $("saveBtn2").onclick = save;
+$("addPromo").onclick = function(){ readCards(); content.promos.push({id:"promo-"+Date.now(),titulo:"",precio:"",descripcion:"",etiqueta:"",imagen:""}); render(); };
+$("addPhoto").onclick = function(){ readCards(); content.galeria.push({id:"g"+Date.now(),imagen:"",titulo:""}); render(); };
+
+if(token) showPanel();
+</script>
+</body>
+</html>
